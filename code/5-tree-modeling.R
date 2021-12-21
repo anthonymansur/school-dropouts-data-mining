@@ -145,7 +145,7 @@ png(width = 6,
     height = 4,
     res = 300,
     units = "in", 
-    filename = "results/rf-iteration-cvv-err.png")
+    filename = "results/gbm-iteration-cvv-err.png")
 cv_errors %>%
   ggplot(aes(x = ntree, y = cv_err, colour = factor(depth))) +
   geom_line() + theme_bw()

@@ -214,12 +214,44 @@ knitr::include_graphics("../results/rf-variable-importance.png")
 ```
 
 ### Boosting
+The last model is boosting, utilizing the outputs of multiple decision trees to achieve better prediction performance.
+
+First, find the optimal number of trees. As can be shown in Figure \@ref(fig:boosting-opt-tree), the optimal number of trees is 1223.
+```{r boosting-opt-tree, out.width = "80%", fig.cap = "CV error over number of trees for boosting", fig.align='center', echo = FALSE}
+knitr::include_graphics("../results/boosting-opt-tree.png")
+```
+
+Next, iterating over different iteration depths, as seen in Figure \@ref(fig:gbm-iteration-cvv-err), the optimal number of iterations is 3.
+```{r gbm-iteration-cvv-err, out.width = "100%", fig.cap = "CV error over different iterations of boosting", echo = FALSE}
+knitr::include_graphics("../results/gbm-iteration-cvv-err.png")
+```
+
+The top 5 relative influence of each variable selected by boosting is shown in Table \@ref(tab:gbm-rel-inf)
+
+```{r gbm-rel-inf, message = FALSE, echo = FALSE}
+read_tsv("../results/gbm-rel-inf-table.tsv") %>%
+    arrange(desc(abs(rel.inf))) %>% 
+  head(5) %>%
+  kable(format = "latex", row.names = NA, 
+        booktabs = TRUE, digits = 3, 
+        col.names = c("Variable", "Relative Influence"),
+        caption = "Relative influence of variables in boosting.") %>%
+  kable_styling(position = "center")
+```
 
 # Conclusions
 
 ## Method comparison
+Table \@ref(tab:model-eval) shows how each model performed. As can be seen, all models performed better than the intercept-only model, where we guess the mean of the training data. Ordinary Least Squares performed the best out of all the regression models, and for the tree models, both of them performed the same amount. Both tree models outperformed the regression models.
+```{r model-eval, message = FALSE, echo = FALSE}
+read_tsv("../results/model-evaluation.tsv") %>%
+  kable(format = "latex", row.names = NA, 
+        booktabs = TRUE, digits = 4, 
+        caption = "Root-mean-squared error of the five models, compared with the intercept-only method") %>%
+  kable_styling(position = "center")
+```
 
-
+Perhaps we see that the least squares method performed better because we are following Occam's razor principle and our test data was very similar to the trainig set, but if we get more testing data, these errors will most likely change. 
 ## Takeaways
 
 TODO
