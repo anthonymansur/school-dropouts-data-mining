@@ -8,8 +8,7 @@ source("code/functions/plot_glmnet.R")
 # read in the training data
 dropout_train = read_tsv("data/clean/dropout-train.tsv") %>%
   # remove the data we won't be regressing on
-  select(-num_of_schools, 
-         -fips, 
+  select(-fips, 
          -county, 
          -state, 
          -mean_experience, 
@@ -136,3 +135,10 @@ ggsave(filename = "results/elnet-trace-plot.png",
        device = "png", 
        width = 6, 
        height = 4)
+
+# extract features selected by elnet and their coefficients
+beta_hat_std = extract_std_coefs(elnet_fit_best, dropout_train)
+beta_hat_std %>%
+  filter(coefficient != 0) %>%
+  arrange(desc(abs(coefficient))) %>% 
+  write_tsv("results/elnet-features-table.tsv")

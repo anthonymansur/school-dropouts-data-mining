@@ -6,8 +6,7 @@ library(tidyverse)
 # read in the training data
 dropout_train = read_tsv("data/clean/dropout-train.tsv") %>%
   # remove the data we won't be regressing on
-  select(-num_of_schools, 
-         -fips, 
+  select(-fips, 
          -county, 
          -state, 
          -mean_experience, 
@@ -37,7 +36,7 @@ dev.off()
 # Find which value of m minimizes error (we see it's the default floor(p/3))
 mvalues = seq(1,17, by = 2) 
 oob_errors = numeric(length(mvalues)) 
-ntree = 500
+ntree = 200
 for(idx in 1:length(mvalues)){
   set.seed(idx)
   m = mvalues[idx]
@@ -60,7 +59,10 @@ dev.off()
 
 # visualize importance 
 set.seed(1)
-rf_fit = randomForest(dropout_rate ~ ., importance = TRUE, data = dropout_train)
+rf_fit = randomForest(dropout_rate ~ ., 
+                      importance = TRUE, 
+                      mtry = 9,
+                      data = dropout_train)
 
 png(width = 8, 
     height = 5,

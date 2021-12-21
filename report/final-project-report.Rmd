@@ -148,13 +148,70 @@ knitr::include_graphics("../results/explanatory-variables.png")
 ## Regression-based methods
 
 ### Ordinary least squares
+The analysis for begins with an ordinary least squares regression of dropout rates on all 17 explanatory variables. 
 
-### Penalized regression
+The summary plot is shown in Table (\@ref(tab:ols-summary))). The multiple R-squared  is 0.247, indicating that these features explains 24.7% of the variation in the response.
+```{r ols-summary, message = FALSE, echo = FALSE}
+read_csv("../results/ols-summary.csv") %>%
+  kable(format = "latex", row.names = NA, 
+        booktabs = TRUE, digits = 4, 
+        caption = "Ordinary least squares summary table on explanatory variables") %>%
+  kable_styling(position = "center")
+```
 
+### Ridge Regression, LASSO Regression, and Elastic Net Regression
+When fitting linear models with many features, they incur lots of variation and they tend to overfit the training data. Hence why other penalizations methods are performed to combat this and provide more insights to the feature variables that are most important.  
+
+Figures \@ref(fig:ridge-trace), \@ref(fig:lasso-trace), and \@ref(fig:elnet-trace) shows the trace plots for ridge regression, LASSO regression, and elastic net regression respectively.
+
+```{r ridge-trace, out.width = "50%", fig.cap = "Trace plot for ridge regression", fig.align='center', echo = FALSE}
+knitr::include_graphics("../results/ridge-trace-plot.png")
+```
+```{r lasso-trace, out.width = "50%", fig.cap = "Trace plot for lasso regression", fig.align='center', echo = FALSE}
+knitr::include_graphics("../results/lasso-trace-plot.png")
+```
+```{r elnet-trace, out.width = "50%", fig.cap = "Trace plot for elastic net regression", fig.align='center', echo = FALSE}
+knitr::include_graphics("../results/elnet-trace-plot.png")
+```
+
+The variables selected by LASSO are shown in Table \@ref(tab:lasso-features). The top 5 featurs selected by elastic net regression are show in in Table \@ref(tab:elnet-features).
+```{r lasso-features, message = FALSE, echo = FALSE}
+read_tsv("../results/lasso-features-table.tsv") %>%
+  kable(format = "latex", row.names = NA, 
+        booktabs = TRUE, digits = 3, 
+        caption = "Explanatory variables selected by LASSO regression") %>%
+  kable_styling(position = "center")
+```
+
+```{r elnet-features, message = FALSE, echo = FALSE}
+read_tsv("../results/elnet-features-table.tsv") %>%
+  head(5) %>%
+  kable(format = "latex", row.names = NA, 
+        booktabs = TRUE, digits = 3, 
+        caption = "Explanatory variables selected by elastic net regression") %>%
+  kable_styling(position = "center")
+```
 
 ## Tree-based methods
 
 ### Random forest
+For random forest, we first optimize the number of trees to consider. The out of bag error is shown below. As we can see, the error decreases and remains relatively constant after around 200 trees. See Figure \@ref(fig:rf-oob-error)
+
+```{r rf-oob-error, out.width = "50%", fig.cap = "Out of bag error for number of feature tuning for random forest", fig.align='center', echo = FALSE}
+knitr::include_graphics("../results/rf-ntree-oob-err.png")
+```
+
+For random forest, we first optimize the number of features *m* to consider at each split by trainig the model on different values of *m*, ranging from 1 to 17. The out of bag error for each value of *m* can be observed in \@ref(fig:rf-m-oob-error). The out of bag error is minimized at a value of *m* = 5.
+
+```{r rf-m-oob-error, out.width = "50%", fig.cap = "Out of bag error for number of feature tuning for random forest", fig.align='center', echo = FALSE}
+knitr::include_graphics("../results/rf-mfeature-oob-err.png")
+```
+
+With this fitted model, we can take a look at the out of bag variable importance (how much prediction accuracy lowers with a given feature out of bag) and purity-based importance (how much node purity improves as a result from splitting that feature). Refer to Figure \@ref(fig:rf-variable-importance)
+
+```{r rf-variable-importance, out.width = "100%", fig.cap = "variable importance and node purity of out of bag", fig.align='center', echo = FALSE}
+knitr::include_graphics("../results/rf-variable-importance.png")
+```
 
 ### Boosting
 
