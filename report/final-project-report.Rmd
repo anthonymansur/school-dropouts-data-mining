@@ -38,11 +38,13 @@ In this report we take a look at the highschool dropout rates in 2007 of several
 
 # Introduction
 
-**Background.** TODO
+**Background.** Dropping out of high school has significant impact on an individual’s future job opportunities, earnings, and physical and mental health.1,2 In 2019 alone, about 2 million people between the ages of 16 through 24 were not enrolled in school and have not earned a high school degree, hereafter referred to as status dropouts.3 While the rates of status dropouts have decreased over the past several decades, differences exist across the US counties.2 Several studies have found significant associations between race/ethnicity, dropout, and educational attainment, which have called for several policies and reforms to bridge these disparities that are prevalent in our society.1
+ 
+Despite the findings that status dropout leads to lower outcomes and that disparities exist, there is still much to be learned about factors associated with status dropouts, specifically across US counties. Most of the literature is focused on general demographic factors examining status dropouts at a nationwide level, but it is still quite unknown why different counties tend to suffer vast differences in status dropout rates. The purpose of this analysis was to evaluate the high school dropout rates across several U.S. counties in 2007. More specifically, we were interested in analyzing teacher compensation, level of education, and county-level data among other factors (eg. demographic, social, etc.) to determine which were most predictive of dropout rates. Studying these will help figure out which factors are most impactful in determining whether or not a student will dropout. We hope that these findings will aid the current body of literature in analyzing dropout rates beyond basic characteristics and include social determinants to better understand the nuances in status dropouts.
 
-**Analysis goals.** TODO
+**Analysis goals.** The goal is to attempt to see if there are reasons why some U.S. counties ahve higher high school dropout rates than others, specifically, what types of explanatory variables can we find that may help stakeholders determine how best to tackle the issue. We will take a look at factors such as teacher compensation and teacher experience at a county level, as well as other factors pertaining to counties to try to explain the difference in dropout rates among counties. Success will be evaluated if we can construct models that perform better than our best guess (taking the average). 
 
-**Significance.** TODO
+**Significance.** This goal is important to address for the so that stakeholders can see what they need to focus on, especially how to allocate funds to better help schools. Whether that is to give more funding to schools, or help with other city-related issues like income inequality, this analysis will try to find the root cause of this discrepency.
 
 # Data
 
@@ -253,12 +255,9 @@ read_tsv("../results/model-evaluation.tsv") %>%
 
 Perhaps we see that the least squares method performed better because we are following Occam's razor principle and our test data was very similar to the trainig set, but if we get more testing data, these errors will most likely change. 
 ## Takeaways
-
-TODO
-
+The main takeaway from this analysis is that we can show that there are statistical significant in how distinct, important features help students learn and remain in school. Schools should focus on bringing in highly experienced teachers as that is one of the best predictors of helping students *stay* in school. However, the most important predictor aren't teachers, but *parents*. Family plays an important role in keeping students in school, and counties should look further in how to assist those in need, especially the growing trend of children with only one parent, as that is one of the strongest correlation amongst high school dropouts.
 
 ## Data and Analysis Limitations
-
 One major limitation is the need for more county-level data, such as adding in other factors that may contribute to dropout (i.e., juvenile crime rate, health-related factors, etc.), as well as a more careful analysis to highly correlated explanatory variables. Another limitation was the lack of data from more recent years on school dropouts, or even for teacher compensation for that matter. The latter proved to be the most limiting, as only two time periods between 2005-2007 were available. Although the County Health Rankings & Roadmaps has plethora of factors that could be added to this  analysis, their data only goes back to 2010, and it would bring bias to include this dataset here.
 
 Another limitation is that the per capita income is over the past 12 months in 2009 inflation-adjusted dollars, while our teacher compensation dataset corresponds to 2006-2007.
@@ -266,7 +265,24 @@ Another limitation is that the per capita income is over the past 12 months in 2
 ## Follow-ups
  Although the models that were created in this study had a lower root-mean-squared error than the intercept model, it was still noticeably high and that may be due to lack of other important factors that may correlate with school dropouts. So, as mentioned above, it is highly recommended to take into consideration other county-level factors. Additionally, the teacher compensation study was taken place over two time-periods, so using both years may prove to be more insightful.
  
+## Appendix
+CV Plots for ridge, LASSO, and elastic net regression.
+
+```{r ridge-cv, out.width = "100%", fig.cap = "Ridge CV plot", echo = FALSE}
+knitr::include_graphics("../results/ridge-cv-plot.png")
+```
+
+```{r lasso-cv, out.width = "100%", fig.cap = "lasso CV plot", echo = FALSE}
+knitr::include_graphics("../results/lasso-cv-plot.png")
+```
+
+```{r elnet-cv, out.width = "100%", fig.cap = "Elastic net regression CV plot", echo = FALSE}
+knitr::include_graphics("../results/elnet-cv-plot.png")
+```
+ 
 \bigskip
 
 Citations:
-https://nces.ed.gov/fastfacts/display.asp?id=16 
+https://www.ednc.org/eraceing-inequities-how-does-race-influence-dropping-out-of-school/
+https://nces.ed.gov/pubs2020/2020117.pdf
+https://nces.ed.gov/fastfacts/display.asp
