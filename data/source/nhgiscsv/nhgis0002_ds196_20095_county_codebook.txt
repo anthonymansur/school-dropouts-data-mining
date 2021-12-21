@@ -1,0 +1,501 @@
+--------------------------------------------------------------------------------
+Codebook for NHGIS data file 'nhgis0002_ds196_20095_county'
+--------------------------------------------------------------------------------
+ 
+Contents
+    - Data Summary
+    - Data Dictionary
+    - Citation and Use
+ 
+Additional documentation on NHGIS data sources is available at: 
+    https://www.nhgis.org/documentation/tabular-data 
+ 
+--------------------------------------------------------------------------------
+Data Summary
+--------------------------------------------------------------------------------
+ 
+Year:             2005-2009
+Geographic level: County (by State)
+Dataset:          2009 American Community Survey: 5-Year Data [2005-2009, Tracts & Larger Areas]
+   NHGIS code:    2005_2009_ACS5b
+   NHGIS ID:      ds196
+Breakdown(s):     Geographic Subarea:
+                     Total area (00)
+Data type(s):     (E) Estimates
+                  (M) Margins of error
+ 
+Tables:
+ 
+1. Gini Index of Income Inequality
+   Universe:    Households
+   Source code: B19083
+   NHGIS code:  R3F
+ 
+2. Sex by Age by Employment Status for the Population 16 Years and Over
+   Universe:    Population 16 years and over
+   Source code: B23001
+   NHGIS code:  R5C
+ 
+--------------------------------------------------------------------------------
+Data Dictionary
+--------------------------------------------------------------------------------
+ 
+Context Fields 
+        GISJOIN:     GIS Join Match Code
+        YEAR:        Data File Year
+        REGIONA:     Region Code
+        DIVISIONA:   Division Code
+        STATE:       State Name
+        STATEA:      State Code
+        COUNTY:      County Name
+        COUNTYA:     County Code
+        COUSUBA:     County Subdivision Code
+        PLACEA:      Place Code
+        TRACTA:      Census Tract Code
+        CONCITA:     Consolidated City Code
+        AIANHHA:     American Indian Area/Alaska Native Area/Hawaiian Home Land Code
+        RES_ONLYA:   American Indian Area/Alaska Native Area (Reservation or Statistical Entity Only) Code
+        TRUSTA:      American Indian Area (Off-Reservation Trust Land Only)/Hawaiian Home Land Code
+        AITSCEA:     Tribal Subdivision/Remainder Code
+        ANRCA:       Alaska Native Regional Corporation Code
+        CBSAA:       Metropolitan Statistical Area/Micropolitan Statistical Area Code
+        CSAA:        Combined Statistical Area Code
+        METDIVA:     Metropolitan Division Code
+        NECTAA:      New England City and Town Area Code
+        CNECTAA:     Combined New England City and Town Area Code
+        NECTADIVA:   New England City and Town Area Division Code
+        UAA:         Urban Area Code
+        CDCURRA:     Congressional District (2007-2013, 110th-112th Congress) Code
+        SLDUA:       State Legislative District (Upper Chamber) Code
+        SLDLA:       State Legislative District (Lower Chamber) Code
+        SUBMCDA:     Subminor Civil Division Code
+        SDELMA:      School District (Elementary)/Remainder Code
+        SDSECA:      School District (Secondary)/Remainder Code
+        SDUNIA:      School District (Unified)/Remainder Code
+        PUMA5A:      Public Use Microdata Sample Area (PUMA) Code
+ 
+Data Type (E):
+    Estimates
+ 
+        NAME_E:      Area Name
+ 
+    Table 1:     Gini Index of Income Inequality
+    Universe:    Households
+    Source code: B19083
+    NHGIS code:  R3F
+        R3FE001:     Gini Index
+ 
+    Table 2:     Sex by Age by Employment Status for the Population 16 Years and Over
+    Universe:    Population 16 years and over
+    Source code: B23001
+    NHGIS code:  R5C
+        R5CE001:     Total
+        R5CE002:     Male
+        R5CE003:     Male: 16 to 19 years
+        R5CE004:     Male: 16 to 19 years: In labor force
+        R5CE005:     Male: 16 to 19 years: In labor force: In Armed Forces
+        R5CE006:     Male: 16 to 19 years: In labor force: Civilian
+        R5CE007:     Male: 16 to 19 years: In labor force: Civilian: Employed
+        R5CE008:     Male: 16 to 19 years: In labor force: Civilian: Unemployed
+        R5CE009:     Male: 16 to 19 years: Not in labor force
+        R5CE010:     Male: 20 and 21 years
+        R5CE011:     Male: 20 and 21 years: In labor force
+        R5CE012:     Male: 20 and 21 years: In labor force: In Armed Forces
+        R5CE013:     Male: 20 and 21 years: In labor force: Civilian
+        R5CE014:     Male: 20 and 21 years: In labor force: Civilian: Employed
+        R5CE015:     Male: 20 and 21 years: In labor force: Civilian: Unemployed
+        R5CE016:     Male: 20 and 21 years: Not in labor force
+        R5CE017:     Male: 22 to 24 years
+        R5CE018:     Male: 22 to 24 years: In labor force
+        R5CE019:     Male: 22 to 24 years: In labor force: In Armed Forces
+        R5CE020:     Male: 22 to 24 years: In labor force: Civilian
+        R5CE021:     Male: 22 to 24 years: In labor force: Civilian: Employed
+        R5CE022:     Male: 22 to 24 years: In labor force: Civilian: Unemployed
+        R5CE023:     Male: 22 to 24 years: Not in labor force
+        R5CE024:     Male: 25 to 29 years
+        R5CE025:     Male: 25 to 29 years: In labor force
+        R5CE026:     Male: 25 to 29 years: In labor force: In Armed Forces
+        R5CE027:     Male: 25 to 29 years: In labor force: Civilian
+        R5CE028:     Male: 25 to 29 years: In labor force: Civilian: Employed
+        R5CE029:     Male: 25 to 29 years: In labor force: Civilian: Unemployed
+        R5CE030:     Male: 25 to 29 years: Not in labor force
+        R5CE031:     Male: 30 to 34 years
+        R5CE032:     Male: 30 to 34 years: In labor force
+        R5CE033:     Male: 30 to 34 years: In labor force: In Armed Forces
+        R5CE034:     Male: 30 to 34 years: In labor force: Civilian
+        R5CE035:     Male: 30 to 34 years: In labor force: Civilian: Employed
+        R5CE036:     Male: 30 to 34 years: In labor force: Civilian: Unemployed
+        R5CE037:     Male: 30 to 34 years: Not in labor force
+        R5CE038:     Male: 35 to 44 years
+        R5CE039:     Male: 35 to 44 years: In labor force
+        R5CE040:     Male: 35 to 44 years: In labor force: In Armed Forces
+        R5CE041:     Male: 35 to 44 years: In labor force: Civilian
+        R5CE042:     Male: 35 to 44 years: In labor force: Civilian: Employed
+        R5CE043:     Male: 35 to 44 years: In labor force: Civilian: Unemployed
+        R5CE044:     Male: 35 to 44 years: Not in labor force
+        R5CE045:     Male: 45 to 54 years
+        R5CE046:     Male: 45 to 54 years: In labor force
+        R5CE047:     Male: 45 to 54 years: In labor force: In Armed Forces
+        R5CE048:     Male: 45 to 54 years: In labor force: Civilian
+        R5CE049:     Male: 45 to 54 years: In labor force: Civilian: Employed
+        R5CE050:     Male: 45 to 54 years: In labor force: Civilian: Unemployed
+        R5CE051:     Male: 45 to 54 years: Not in labor force
+        R5CE052:     Male: 55 to 59 years
+        R5CE053:     Male: 55 to 59 years: In labor force
+        R5CE054:     Male: 55 to 59 years: In labor force: In Armed Forces
+        R5CE055:     Male: 55 to 59 years: In labor force: Civilian
+        R5CE056:     Male: 55 to 59 years: In labor force: Civilian: Employed
+        R5CE057:     Male: 55 to 59 years: In labor force: Civilian: Unemployed
+        R5CE058:     Male: 55 to 59 years: Not in labor force
+        R5CE059:     Male: 60 and 61 years
+        R5CE060:     Male: 60 and 61 years: In labor force
+        R5CE061:     Male: 60 and 61 years: In labor force: In Armed Forces
+        R5CE062:     Male: 60 and 61 years: In labor force: Civilian
+        R5CE063:     Male: 60 and 61 years: In labor force: Civilian: Employed
+        R5CE064:     Male: 60 and 61 years: In labor force: Civilian: Unemployed
+        R5CE065:     Male: 60 and 61 years: Not in labor force
+        R5CE066:     Male: 62 to 64 years
+        R5CE067:     Male: 62 to 64 years: In labor force
+        R5CE068:     Male: 62 to 64 years: In labor force: In Armed Forces
+        R5CE069:     Male: 62 to 64 years: In labor force: Civilian
+        R5CE070:     Male: 62 to 64 years: In labor force: Civilian: Employed
+        R5CE071:     Male: 62 to 64 years: In labor force: Civilian: Unemployed
+        R5CE072:     Male: 62 to 64 years: Not in labor force
+        R5CE073:     Male: 65 to 69 years
+        R5CE074:     Male: 65 to 69 years: In labor force
+        R5CE075:     Male: 65 to 69 years: In labor force: Employed
+        R5CE076:     Male: 65 to 69 years: In labor force: Unemployed
+        R5CE077:     Male: 65 to 69 years: Not in labor force
+        R5CE078:     Male: 70 to 74 years
+        R5CE079:     Male: 70 to 74 years: In labor force
+        R5CE080:     Male: 70 to 74 years: In labor force: Employed
+        R5CE081:     Male: 70 to 74 years: In labor force: Unemployed
+        R5CE082:     Male: 70 to 74 years: Not in labor force
+        R5CE083:     Male: 75 years and over
+        R5CE084:     Male: 75 years and over: In labor force
+        R5CE085:     Male: 75 years and over: In labor force: Employed
+        R5CE086:     Male: 75 years and over: In labor force: Unemployed
+        R5CE087:     Male: 75 years and over: Not in labor force
+        R5CE088:     Female
+        R5CE089:     Female: 16 to 19 years
+        R5CE090:     Female: 16 to 19 years: In labor force
+        R5CE091:     Female: 16 to 19 years: In labor force: In Armed Forces
+        R5CE092:     Female: 16 to 19 years: In labor force: Civilian
+        R5CE093:     Female: 16 to 19 years: In labor force: Civilian: Employed
+        R5CE094:     Female: 16 to 19 years: In labor force: Civilian: Unemployed
+        R5CE095:     Female: 16 to 19 years: Not in labor force
+        R5CE096:     Female: 20 and 21 years
+        R5CE097:     Female: 20 and 21 years: In labor force
+        R5CE098:     Female: 20 and 21 years: In labor force: In Armed Forces
+        R5CE099:     Female: 20 and 21 years: In labor force: Civilian
+        R5CE100:     Female: 20 and 21 years: In labor force: Civilian: Employed
+        R5CE101:     Female: 20 and 21 years: In labor force: Civilian: Unemployed
+        R5CE102:     Female: 20 and 21 years: Not in labor force
+        R5CE103:     Female: 22 to 24 years
+        R5CE104:     Female: 22 to 24 years: In labor force
+        R5CE105:     Female: 22 to 24 years: In labor force: In Armed Forces
+        R5CE106:     Female: 22 to 24 years: In labor force: Civilian
+        R5CE107:     Female: 22 to 24 years: In labor force: Civilian: Employed
+        R5CE108:     Female: 22 to 24 years: In labor force: Civilian: Unemployed
+        R5CE109:     Female: 22 to 24 years: Not in labor force
+        R5CE110:     Female: 25 to 29 years
+        R5CE111:     Female: 25 to 29 years: In labor force
+        R5CE112:     Female: 25 to 29 years: In labor force: In Armed Forces
+        R5CE113:     Female: 25 to 29 years: In labor force: Civilian
+        R5CE114:     Female: 25 to 29 years: In labor force: Civilian: Employed
+        R5CE115:     Female: 25 to 29 years: In labor force: Civilian: Unemployed
+        R5CE116:     Female: 25 to 29 years: Not in labor force
+        R5CE117:     Female: 30 to 34 years
+        R5CE118:     Female: 30 to 34 years: In labor force
+        R5CE119:     Female: 30 to 34 years: In labor force: In Armed Forces
+        R5CE120:     Female: 30 to 34 years: In labor force: Civilian
+        R5CE121:     Female: 30 to 34 years: In labor force: Civilian: Employed
+        R5CE122:     Female: 30 to 34 years: In labor force: Civilian: Unemployed
+        R5CE123:     Female: 30 to 34 years: Not in labor force
+        R5CE124:     Female: 35 to 44 years
+        R5CE125:     Female: 35 to 44 years: In labor force
+        R5CE126:     Female: 35 to 44 years: In labor force: In Armed Forces
+        R5CE127:     Female: 35 to 44 years: In labor force: Civilian
+        R5CE128:     Female: 35 to 44 years: In labor force: Civilian: Employed
+        R5CE129:     Female: 35 to 44 years: In labor force: Civilian: Unemployed
+        R5CE130:     Female: 35 to 44 years: Not in labor force
+        R5CE131:     Female: 45 to 54 years
+        R5CE132:     Female: 45 to 54 years: In labor force
+        R5CE133:     Female: 45 to 54 years: In labor force: In Armed Forces
+        R5CE134:     Female: 45 to 54 years: In labor force: Civilian
+        R5CE135:     Female: 45 to 54 years: In labor force: Civilian: Employed
+        R5CE136:     Female: 45 to 54 years: In labor force: Civilian: Unemployed
+        R5CE137:     Female: 45 to 54 years: Not in labor force
+        R5CE138:     Female: 55 to 59 years
+        R5CE139:     Female: 55 to 59 years: In labor force
+        R5CE140:     Female: 55 to 59 years: In labor force: In Armed Forces
+        R5CE141:     Female: 55 to 59 years: In labor force: Civilian
+        R5CE142:     Female: 55 to 59 years: In labor force: Civilian: Employed
+        R5CE143:     Female: 55 to 59 years: In labor force: Civilian: Unemployed
+        R5CE144:     Female: 55 to 59 years: Not in labor force
+        R5CE145:     Female: 60 and 61 years
+        R5CE146:     Female: 60 and 61 years: In labor force
+        R5CE147:     Female: 60 and 61 years: In labor force: In Armed Forces
+        R5CE148:     Female: 60 and 61 years: In labor force: Civilian
+        R5CE149:     Female: 60 and 61 years: In labor force: Civilian: Employed
+        R5CE150:     Female: 60 and 61 years: In labor force: Civilian: Unemployed
+        R5CE151:     Female: 60 and 61 years: Not in labor force
+        R5CE152:     Female: 62 to 64 years
+        R5CE153:     Female: 62 to 64 years: In labor force
+        R5CE154:     Female: 62 to 64 years: In labor force: In Armed Forces
+        R5CE155:     Female: 62 to 64 years: In labor force: Civilian
+        R5CE156:     Female: 62 to 64 years: In labor force: Civilian: Employed
+        R5CE157:     Female: 62 to 64 years: In labor force: Civilian: Unemployed
+        R5CE158:     Female: 62 to 64 years: Not in labor force
+        R5CE159:     Female: 65 to 69 years
+        R5CE160:     Female: 65 to 69 years: In labor force
+        R5CE161:     Female: 65 to 69 years: In labor force: Employed
+        R5CE162:     Female: 65 to 69 years: In labor force: Unemployed
+        R5CE163:     Female: 65 to 69 years: Not in labor force
+        R5CE164:     Female: 70 to 74 years
+        R5CE165:     Female: 70 to 74 years: In labor force
+        R5CE166:     Female: 70 to 74 years: In labor force: Employed
+        R5CE167:     Female: 70 to 74 years: In labor force: Unemployed
+        R5CE168:     Female: 70 to 74 years: Not in labor force
+        R5CE169:     Female: 75 years and over
+        R5CE170:     Female: 75 years and over: In labor force
+        R5CE171:     Female: 75 years and over: In labor force: Employed
+        R5CE172:     Female: 75 years and over: In labor force: Unemployed
+        R5CE173:     Female: 75 years and over: Not in labor force
+ 
+Data Type (M):
+    Margins of error
+ 
+        NAME_M:      Area Name
+ 
+    Table 1:     Gini Index of Income Inequality
+    Universe:    Households
+    Source code: B19083
+    NHGIS code:  R3F
+        R3FM001:     Gini Index
+ 
+    Table 2:     Sex by Age by Employment Status for the Population 16 Years and Over
+    Universe:    Population 16 years and over
+    Source code: B23001
+    NHGIS code:  R5C
+        R5CM001:     Total
+        R5CM002:     Male
+        R5CM003:     Male: 16 to 19 years
+        R5CM004:     Male: 16 to 19 years: In labor force
+        R5CM005:     Male: 16 to 19 years: In labor force: In Armed Forces
+        R5CM006:     Male: 16 to 19 years: In labor force: Civilian
+        R5CM007:     Male: 16 to 19 years: In labor force: Civilian: Employed
+        R5CM008:     Male: 16 to 19 years: In labor force: Civilian: Unemployed
+        R5CM009:     Male: 16 to 19 years: Not in labor force
+        R5CM010:     Male: 20 and 21 years
+        R5CM011:     Male: 20 and 21 years: In labor force
+        R5CM012:     Male: 20 and 21 years: In labor force: In Armed Forces
+        R5CM013:     Male: 20 and 21 years: In labor force: Civilian
+        R5CM014:     Male: 20 and 21 years: In labor force: Civilian: Employed
+        R5CM015:     Male: 20 and 21 years: In labor force: Civilian: Unemployed
+        R5CM016:     Male: 20 and 21 years: Not in labor force
+        R5CM017:     Male: 22 to 24 years
+        R5CM018:     Male: 22 to 24 years: In labor force
+        R5CM019:     Male: 22 to 24 years: In labor force: In Armed Forces
+        R5CM020:     Male: 22 to 24 years: In labor force: Civilian
+        R5CM021:     Male: 22 to 24 years: In labor force: Civilian: Employed
+        R5CM022:     Male: 22 to 24 years: In labor force: Civilian: Unemployed
+        R5CM023:     Male: 22 to 24 years: Not in labor force
+        R5CM024:     Male: 25 to 29 years
+        R5CM025:     Male: 25 to 29 years: In labor force
+        R5CM026:     Male: 25 to 29 years: In labor force: In Armed Forces
+        R5CM027:     Male: 25 to 29 years: In labor force: Civilian
+        R5CM028:     Male: 25 to 29 years: In labor force: Civilian: Employed
+        R5CM029:     Male: 25 to 29 years: In labor force: Civilian: Unemployed
+        R5CM030:     Male: 25 to 29 years: Not in labor force
+        R5CM031:     Male: 30 to 34 years
+        R5CM032:     Male: 30 to 34 years: In labor force
+        R5CM033:     Male: 30 to 34 years: In labor force: In Armed Forces
+        R5CM034:     Male: 30 to 34 years: In labor force: Civilian
+        R5CM035:     Male: 30 to 34 years: In labor force: Civilian: Employed
+        R5CM036:     Male: 30 to 34 years: In labor force: Civilian: Unemployed
+        R5CM037:     Male: 30 to 34 years: Not in labor force
+        R5CM038:     Male: 35 to 44 years
+        R5CM039:     Male: 35 to 44 years: In labor force
+        R5CM040:     Male: 35 to 44 years: In labor force: In Armed Forces
+        R5CM041:     Male: 35 to 44 years: In labor force: Civilian
+        R5CM042:     Male: 35 to 44 years: In labor force: Civilian: Employed
+        R5CM043:     Male: 35 to 44 years: In labor force: Civilian: Unemployed
+        R5CM044:     Male: 35 to 44 years: Not in labor force
+        R5CM045:     Male: 45 to 54 years
+        R5CM046:     Male: 45 to 54 years: In labor force
+        R5CM047:     Male: 45 to 54 years: In labor force: In Armed Forces
+        R5CM048:     Male: 45 to 54 years: In labor force: Civilian
+        R5CM049:     Male: 45 to 54 years: In labor force: Civilian: Employed
+        R5CM050:     Male: 45 to 54 years: In labor force: Civilian: Unemployed
+        R5CM051:     Male: 45 to 54 years: Not in labor force
+        R5CM052:     Male: 55 to 59 years
+        R5CM053:     Male: 55 to 59 years: In labor force
+        R5CM054:     Male: 55 to 59 years: In labor force: In Armed Forces
+        R5CM055:     Male: 55 to 59 years: In labor force: Civilian
+        R5CM056:     Male: 55 to 59 years: In labor force: Civilian: Employed
+        R5CM057:     Male: 55 to 59 years: In labor force: Civilian: Unemployed
+        R5CM058:     Male: 55 to 59 years: Not in labor force
+        R5CM059:     Male: 60 and 61 years
+        R5CM060:     Male: 60 and 61 years: In labor force
+        R5CM061:     Male: 60 and 61 years: In labor force: In Armed Forces
+        R5CM062:     Male: 60 and 61 years: In labor force: Civilian
+        R5CM063:     Male: 60 and 61 years: In labor force: Civilian: Employed
+        R5CM064:     Male: 60 and 61 years: In labor force: Civilian: Unemployed
+        R5CM065:     Male: 60 and 61 years: Not in labor force
+        R5CM066:     Male: 62 to 64 years
+        R5CM067:     Male: 62 to 64 years: In labor force
+        R5CM068:     Male: 62 to 64 years: In labor force: In Armed Forces
+        R5CM069:     Male: 62 to 64 years: In labor force: Civilian
+        R5CM070:     Male: 62 to 64 years: In labor force: Civilian: Employed
+        R5CM071:     Male: 62 to 64 years: In labor force: Civilian: Unemployed
+        R5CM072:     Male: 62 to 64 years: Not in labor force
+        R5CM073:     Male: 65 to 69 years
+        R5CM074:     Male: 65 to 69 years: In labor force
+        R5CM075:     Male: 65 to 69 years: In labor force: Employed
+        R5CM076:     Male: 65 to 69 years: In labor force: Unemployed
+        R5CM077:     Male: 65 to 69 years: Not in labor force
+        R5CM078:     Male: 70 to 74 years
+        R5CM079:     Male: 70 to 74 years: In labor force
+        R5CM080:     Male: 70 to 74 years: In labor force: Employed
+        R5CM081:     Male: 70 to 74 years: In labor force: Unemployed
+        R5CM082:     Male: 70 to 74 years: Not in labor force
+        R5CM083:     Male: 75 years and over
+        R5CM084:     Male: 75 years and over: In labor force
+        R5CM085:     Male: 75 years and over: In labor force: Employed
+        R5CM086:     Male: 75 years and over: In labor force: Unemployed
+        R5CM087:     Male: 75 years and over: Not in labor force
+        R5CM088:     Female
+        R5CM089:     Female: 16 to 19 years
+        R5CM090:     Female: 16 to 19 years: In labor force
+        R5CM091:     Female: 16 to 19 years: In labor force: In Armed Forces
+        R5CM092:     Female: 16 to 19 years: In labor force: Civilian
+        R5CM093:     Female: 16 to 19 years: In labor force: Civilian: Employed
+        R5CM094:     Female: 16 to 19 years: In labor force: Civilian: Unemployed
+        R5CM095:     Female: 16 to 19 years: Not in labor force
+        R5CM096:     Female: 20 and 21 years
+        R5CM097:     Female: 20 and 21 years: In labor force
+        R5CM098:     Female: 20 and 21 years: In labor force: In Armed Forces
+        R5CM099:     Female: 20 and 21 years: In labor force: Civilian
+        R5CM100:     Female: 20 and 21 years: In labor force: Civilian: Employed
+        R5CM101:     Female: 20 and 21 years: In labor force: Civilian: Unemployed
+        R5CM102:     Female: 20 and 21 years: Not in labor force
+        R5CM103:     Female: 22 to 24 years
+        R5CM104:     Female: 22 to 24 years: In labor force
+        R5CM105:     Female: 22 to 24 years: In labor force: In Armed Forces
+        R5CM106:     Female: 22 to 24 years: In labor force: Civilian
+        R5CM107:     Female: 22 to 24 years: In labor force: Civilian: Employed
+        R5CM108:     Female: 22 to 24 years: In labor force: Civilian: Unemployed
+        R5CM109:     Female: 22 to 24 years: Not in labor force
+        R5CM110:     Female: 25 to 29 years
+        R5CM111:     Female: 25 to 29 years: In labor force
+        R5CM112:     Female: 25 to 29 years: In labor force: In Armed Forces
+        R5CM113:     Female: 25 to 29 years: In labor force: Civilian
+        R5CM114:     Female: 25 to 29 years: In labor force: Civilian: Employed
+        R5CM115:     Female: 25 to 29 years: In labor force: Civilian: Unemployed
+        R5CM116:     Female: 25 to 29 years: Not in labor force
+        R5CM117:     Female: 30 to 34 years
+        R5CM118:     Female: 30 to 34 years: In labor force
+        R5CM119:     Female: 30 to 34 years: In labor force: In Armed Forces
+        R5CM120:     Female: 30 to 34 years: In labor force: Civilian
+        R5CM121:     Female: 30 to 34 years: In labor force: Civilian: Employed
+        R5CM122:     Female: 30 to 34 years: In labor force: Civilian: Unemployed
+        R5CM123:     Female: 30 to 34 years: Not in labor force
+        R5CM124:     Female: 35 to 44 years
+        R5CM125:     Female: 35 to 44 years: In labor force
+        R5CM126:     Female: 35 to 44 years: In labor force: In Armed Forces
+        R5CM127:     Female: 35 to 44 years: In labor force: Civilian
+        R5CM128:     Female: 35 to 44 years: In labor force: Civilian: Employed
+        R5CM129:     Female: 35 to 44 years: In labor force: Civilian: Unemployed
+        R5CM130:     Female: 35 to 44 years: Not in labor force
+        R5CM131:     Female: 45 to 54 years
+        R5CM132:     Female: 45 to 54 years: In labor force
+        R5CM133:     Female: 45 to 54 years: In labor force: In Armed Forces
+        R5CM134:     Female: 45 to 54 years: In labor force: Civilian
+        R5CM135:     Female: 45 to 54 years: In labor force: Civilian: Employed
+        R5CM136:     Female: 45 to 54 years: In labor force: Civilian: Unemployed
+        R5CM137:     Female: 45 to 54 years: Not in labor force
+        R5CM138:     Female: 55 to 59 years
+        R5CM139:     Female: 55 to 59 years: In labor force
+        R5CM140:     Female: 55 to 59 years: In labor force: In Armed Forces
+        R5CM141:     Female: 55 to 59 years: In labor force: Civilian
+        R5CM142:     Female: 55 to 59 years: In labor force: Civilian: Employed
+        R5CM143:     Female: 55 to 59 years: In labor force: Civilian: Unemployed
+        R5CM144:     Female: 55 to 59 years: Not in labor force
+        R5CM145:     Female: 60 and 61 years
+        R5CM146:     Female: 60 and 61 years: In labor force
+        R5CM147:     Female: 60 and 61 years: In labor force: In Armed Forces
+        R5CM148:     Female: 60 and 61 years: In labor force: Civilian
+        R5CM149:     Female: 60 and 61 years: In labor force: Civilian: Employed
+        R5CM150:     Female: 60 and 61 years: In labor force: Civilian: Unemployed
+        R5CM151:     Female: 60 and 61 years: Not in labor force
+        R5CM152:     Female: 62 to 64 years
+        R5CM153:     Female: 62 to 64 years: In labor force
+        R5CM154:     Female: 62 to 64 years: In labor force: In Armed Forces
+        R5CM155:     Female: 62 to 64 years: In labor force: Civilian
+        R5CM156:     Female: 62 to 64 years: In labor force: Civilian: Employed
+        R5CM157:     Female: 62 to 64 years: In labor force: Civilian: Unemployed
+        R5CM158:     Female: 62 to 64 years: Not in labor force
+        R5CM159:     Female: 65 to 69 years
+        R5CM160:     Female: 65 to 69 years: In labor force
+        R5CM161:     Female: 65 to 69 years: In labor force: Employed
+        R5CM162:     Female: 65 to 69 years: In labor force: Unemployed
+        R5CM163:     Female: 65 to 69 years: Not in labor force
+        R5CM164:     Female: 70 to 74 years
+        R5CM165:     Female: 70 to 74 years: In labor force
+        R5CM166:     Female: 70 to 74 years: In labor force: Employed
+        R5CM167:     Female: 70 to 74 years: In labor force: Unemployed
+        R5CM168:     Female: 70 to 74 years: Not in labor force
+        R5CM169:     Female: 75 years and over
+        R5CM170:     Female: 75 years and over: In labor force
+        R5CM171:     Female: 75 years and over: In labor force: Employed
+        R5CM172:     Female: 75 years and over: In labor force: Unemployed
+        R5CM173:     Female: 75 years and over: Not in labor force
+ 
+--------------------------------------------------------------------------------
+Citation and Use of NHGIS Data
+--------------------------------------------------------------------------------
+ 
+All persons are granted a limited license to use this documentation and the
+accompanying data, subject to the following conditions:
+
+* REDISTRIBUTION: You will not redistribute the data without permission.
+
+  You may publish a subset of the data to meet journal requirements for accessing 
+  data related to a particular publication. Contact us for permission for any other 
+  redistribution; we will consider requests for free and commercial redistribution.
+
+* CITATION: You will cite NHGIS appropriately.
+
+    * Publications and research reports employing NHGIS data (either tabular or GIS) 
+      should include the following citation:
+
+        Steven Manson, Jonathan Schroeder, David Van Riper, Tracy Kugler, and Steven Ruggles. 
+        IPUMS National Historical Geographic Information System: Version 16.0 
+        [dataset]. Minneapolis, MN: IPUMS. 2021. 
+        http://doi.org/10.18128/D050.V16.0
+
+    * For policy briefs, online resources, or articles in the popular press, we 
+      recommend that you cite the use of NHGIS data as follows:
+
+        IPUMS NHGIS, University of Minnesota, www.nhgis.org.
+
+These terms of use are a legally binding agreement. You can use the data only in 
+accordance with these terms, and any other use is a violation of the agreement. 
+Violations may result in revocation of the agreement and prohibition from using other 
+IPUMS data. If IPUMS or our partners are harmed from your violation, you are 
+responsible for all damages, including reasonable attorney's fees and expenses.
+        
+In addition, we request that users send us a copy of any publications, research
+reports, or educational material making use of the data or documentation.
+
+Send electronic material to: nhgis@umn.edu
+
+Printed matter should be sent to:
+
+    IPUMS NHGIS
+    Institute for Social Research and Data Innovation
+    University of Minnesota
+    50 Willey Hall
+    225 19th Ave S
+    Minneapolis, MN 55455

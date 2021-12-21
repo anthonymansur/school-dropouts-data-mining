@@ -1,0 +1,8 @@
+Method	Test RMSE
+Intercept-only	2.073
+Ordinary Least Squares	1.752
+Ridge Regression	1.884
+Lasso Regression	1.858
+Elastic Net Regression	1.884
+Random Forest	1.718
+Boosting	1.718

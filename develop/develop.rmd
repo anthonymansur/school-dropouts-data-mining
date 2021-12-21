@@ -1,0 +1,187 @@
+---
+title: "help"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(ggcorrplot)
+library(cowplot)
+library(kableExtra)     # for printing tables
+```
+
+```{r}
+dropout_data = read_tsv("../data/clean/dropout-data.tsv")
+dropout_data %>% head()
+```
+
+```{r}
+# calculate median dropout rate
+median_dropout_rate = dropout_data %>%
+  summarise(median(dropout_rate)) %>%
+  pull()
+median_dropout_rate
+```
+
+```{r}
+# remove extreme outlier
+dropout_data = dropout_data %>% filter(dropout_rate < 40)
+```
+
+```{r}
+# create histogram of dropout rate
+dropout_data %>%
+  ggplot(aes(x=dropout_rate)) +
+  geom_boxplot() +
+  labs(x = "Dropout rate") + 
+  theme_bw() + theme(legend.position = "none")
+```
+
+```{r}
+histogram = function(variable, name){
+  p = dropout_data %>%
+    ggplot(aes(x=variable)) +
+    geom_histogram() +
+    labs(x = name) + 
+    theme_bw() + theme(legend.position = "none")
+  return(p)
+}
+
+p_married = histogram(dropout_data$married, "Married")
+p_single_mom = histogram(dropout_data$single_mom, "Single Mother")
+p_gini_index = histogram(dropout_data$gini_index, "Gini Index")
+p_per_capita_income = histogram(dropout_data$per_capita_income, "Per Capita Income")
+p_welfare = histogram(dropout_data$welfare, "Welfare")
+p_educated = histogram(dropout_data$educated, "Educated")
+p_advanced_educ = histogram(dropout_data$advanced_educ, "Teacher: Adv. Educ.")
+p_exp_1_5 = histogram(dropout_data$exp_1_5, "Teacher: 1-5 yrs of exp.")
+p_exp_6_10 = histogram(dropout_data$exp_6_10, "Teacher: 6-10 yrs of exp.")
+p_exp_11_20 = histogram(dropout_data$exp_11_20, "Teacher: 11-20 yrs of exp.")
+p_exp_21_30 = histogram(dropout_data$exp_21_30, "Teacher: 21-30 yrs of exp.")
+p_exp_gt_30 = histogram(dropout_data$exp_gt_30, "Teacher: >30 yrs of exp.")
+p_mbsal_1_5 = histogram(dropout_data$mbsal_1_5, "Salary: 1-5 yrs of exp.")
+p_mbsal_6_10 = histogram(dropout_data$mbsal_6_10, "Salary: 1-5 yrs of exp.")
+p_mbsal_11_20 = histogram(dropout_data$mbsal_11_20, "Salary: 11-20 yrs of exp.")
+p_mbsal_21_30 = histogram(dropout_data$mbsal_21_30, "Salary: 21-30 yrs of exp.")
+p_mbsal_gt_30 = histogram(dropout_data$mbsal_gt_30, "Salary: >30 yrs of exp.")
+```
+
+```{r}
+plot_grid(p_married,
+        p_single_mom,
+        p_gini_index,
+        p_per_capita_income,
+        p_welfare,
+        p_educated,
+        p_advanced_educ,
+        p_exp_1_5,
+        p_exp_6_10,
+        p_exp_11_20,
+        p_exp_21_30,
+        p_exp_gt_30,
+        p_mbsal_1_5,
+        p_mbsal_6_10,
+        p_mbsal_11_20,
+        p_mbsal_21_30,
+        p_mbsal_gt_30)
+```
+
+```{r}
+# Demographics
+demographic_variables = dropout_data %>%
+  select(male, 
+         white, 
+         black, 
+         asian, 
+         hispanic, 
+         married, 
+         single_mom,
+         #bachelors_only,
+         advanced_educ,
+         exp_1_5,
+         exp_6_10,
+         exp_11_20,
+         exp_21_30,
+         exp_gt_30)
+
+demographic_cor = cor(demographic_variables)
+
+# Economic
+economic_variables = dropout_data %>%
+  select(gini_index,
+         per_capita_income,
+         welfare,
+         #mean_salary,
+         mbsal_1_5,
+         mbsal_6_10,
+         mbsal_11_20,
+         mbsal_21_30,
+         mbsal_gt_30)
+
+economic_cor = cor(economic_variables)
+
+# total 
+total_variables = dropout_data %>%
+  select(gini_index,
+         per_capita_income,
+         welfare,
+         #mean_salary,
+         mbsal_1_5,
+         mbsal_6_10,
+         mbsal_11_20,
+         mbsal_21_30,
+         mbsal_gt_30,
+         male, 
+         white, 
+         black, 
+         asian, 
+         hispanic, 
+         married, 
+         single_mom,
+         #bachelors_only,
+         advanced_educ,
+         exp_1_5,
+         exp_6_10,
+         exp_11_20,
+         exp_21_30,
+         exp_gt_30)
+total_cor = cor(total_variables)
+```
+
+```{r}
+ggcorrplot(demographic_cor)
+ggcorrplot(economic_cor)
+ggcorrplot(total_cor)
+```
+```{r}
+dropout_plot = function(variable, name){
+  p = dropout_data %>%
+  ggplot(aes(x=variable, y=dropout_rate)) +
+  geom_point() +
+  geom_smooth(se=FALSE) +
+  labs(x=name, y="Dropout Rate") + 
+  theme_bw()
+  return(p)
+}
+```
+
+```{r}
+d_gini = dropout_plot(dropout_data$gini_index, "Gini Index")
+d_salary = dropout_plot(dropout_data$mean_salary, "Teacher Mean Salary")
+d_exp = dropout_plot(dropout_data$mean_experience, "Teacher Mean Experience")
+d_educ = dropout_plot(dropout_data$educated, 
+             "Percentage of pop. with high school degree or higher")
+d_welfare = dropout_plot(dropout_data$welfare, "Percentage of pop. under welfare")
+d_income = dropout_plot(dropout_data$per_capita_income, "Log of Income per capita")
+```
+```{r}
+county_data = read_csv("../data/raw/county1.csv")
+county_data %>% select(c(COUNTY, ROAM002, ROAM001)) %>% filter(ROAM002 > ROAM001)
+```
+

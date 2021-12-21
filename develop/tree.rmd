@@ -1,0 +1,192 @@
+---
+title: "tree"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(randomForest)
+library(gbm)
+```
+
+```{r}
+dropout_train = read_tsv("../data/clean/dropout-train.tsv") %>%
+  select(-num_of_schools, 
+         -fips, 
+         -county, 
+         -state, 
+         -mean_experience, 
+         -mean_salary)
+dropout_test = read_tsv("../data/clean/dropout-test.tsv") %>%
+  select(-num_of_schools, 
+         -fips, 
+         -county, 
+         -state, 
+         -mean_experience, 
+         -mean_salary)
+```
+
+```{r}
+rf_fit = randomForest(dropout_rate ~ ., data = dropout_train)
+
+# OOB error
+oob_error = tibble(ntree = 1:500, oob_err = rf_fit$mse)
+oob_error
+
+# Find which value of m minimizes error (we see it's the default floor(p/3))
+mvalues = seq(1,17, by = 2) 
+oob_errors = numeric(length(mvalues)) 
+ntree = 500
+for(idx in 1:length(mvalues)){
+  m = mvalues[idx]
+  rf_fit = randomForest(dropout_rate ~ ., mtry = m, data = dropout_train)
+  oob_errors[idx] = rf_fit$mse[ntree]
+}
+tibble(m = mvalues, oob_err = oob_errors) %>%
+  ggplot(aes(x = m, y = oob_err)) +
+  geom_line() + geom_point() +
+  scale_x_continuous(breaks = mvalues) +
+  theme_bw()
+```
+
+```{r}
+# forgot to plot errors
+oob_error %>%  ggplot(aes(x = ntree, y = oob_err)) + geom_line() + theme_bw()
+```
+
+```{r}
+rf_fit = randomForest(dropout_rate ~ ., importance = TRUE, data = dropout_train)
+
+# Visualizing importance
+varImpPlot(rf_fit)
+```
+
+```{r}
+# making predictions
+rf_predictions = predict(rf_fit, newdata = dropout_test)
+
+# root mean-squared prediction error
+rf_rmse = sqrt(mean((rf_predictions - dropout_test$dropout_rate)^2))
+rf_rmse
+```
+```{r}
+m = mean(dropout_train$dropout_rate)
+sqrt(mean((m - dropout_test$dropout_rate)^2))
+```
+
+```{r}
+# Boosting Models 
+set.seed(1)
+# step 1: find the optimal number of trees
+gbm_fit_slow = gbm(dropout_rate ~ .,
+                   distribution = "gaussian",
+                   n.trees = 2000,
+                   interaction.depth = 1,
+                   shrinkage = 0.01,
+                   cv.folds = 5,
+                   data = dropout_train)
+opt_num_trees = gbm.perf(gbm_fit_slow)
+opt_num_trees
+```
+
+```{r}
+# Step 2: Find the optimal interaction depth
+set.seed(1)
+ntrees = 1223
+gbm_fit_1 = gbm(dropout_rate ~ .,
+              distribution = "gaussian",
+              n.trees = ntrees,
+              interaction.depth = 1,
+              shrinkage = 0.1,
+              cv.folds = 5,
+              data = dropout_train)
+gbm_fit_2 = gbm(dropout_rate ~ .,
+              distribution = "gaussian",
+              n.trees = ntrees,
+              interaction.depth = 2,
+              shrinkage = 0.1,
+              cv.folds = 5,
+              data = dropout_train)
+gbm_fit_3 = gbm(dropout_rate ~ .,
+              distribution = "gaussian",
+              n.trees = ntrees,
+              interaction.depth = 3,
+              shrinkage = 0.1,
+              cv.folds = 5,
+              data = dropout_train)
+gbm_fit_4 = gbm(dropout_rate ~ .,
+              distribution = "gaussian",
+              n.trees = ntrees,
+              interaction.depth = 4,
+              shrinkage = 0.1,
+              cv.folds = 5,
+              data = dropout_train)
+```
+
+```{r}
+cv_errors = bind_rows(
+  tibble(ntree = 1:ntrees, cv_err = gbm_fit_1$cv.error, depth = 1),
+  tibble(ntree = 1:ntrees, cv_err = gbm_fit_2$cv.error, depth = 2),
+  tibble(ntree = 1:ntrees, cv_err = gbm_fit_3$cv.error, depth = 3),
+  tibble(ntree = 1:ntrees, cv_err = gbm_fit_4$cv.error, depth = 4)
+)
+cv_errors
+
+cv_errors %>%
+  ggplot(aes(x = ntree, y = cv_err, colour = factor(depth))) +
+  geom_line() + theme_bw()
+```
+
+```{r}
+# Optimal number of trees 1223, at iteration 3
+set.seed(1)
+gbm_fit_optimal = gbm(dropout_rate ~ .,
+              distribution = "gaussian",
+              n.trees = 1500,
+              interaction.depth = 3,
+              shrinkage = 0.01,
+              cv.folds = 5,
+              data = dropout_train)
+optimal_num_trees = gbm.perf(gbm_fit_optimal, plot.it = FALSE) 
+optimal_num_trees
+```
+
+
+```{r}
+summary(gbm_fit_optimal, n.trees = optimal_num_trees, plotit = FALSE)
+```
+
+```{r}
+plot(gbm_fit_optimal, i.var = "married", n.trees = optimal_num_trees)
+plot(gbm_fit_optimal, i.var = "single_mom", n.trees = optimal_num_trees)
+```
+
+```{r}
+# Making predictions
+gbm_predictions = predict(gbm_fit_optimal, n.trees = optimal_num_trees,
+                          newdata = dropout_test)
+gbm_predictions
+```
+
+```{r}
+gbm_rmse = sqrt(mean((gbm_predictions - dropout_test$dropout_rate)^2))
+
+m = mean(dropout_train$dropout_rate)
+intercept_rmse = sqrt(mean((m - dropout_test$dropout_rate)^2))
+
+# create table of these three model test errors
+error_for_models = tribble(
+  ~Model, ~RMSE, 
+  #------/------- 
+  "Intercept", intercept_rmse,
+  "Random Forest", rf_rmse,
+  "Boosting", gbm_rmse,
+  )
+error_for_models
+```

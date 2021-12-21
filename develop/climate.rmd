@@ -1,0 +1,234 @@
+---
+title: "develop"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# load libraries
+library(tidyverse)
+```
+
+```{r}
+# helper functions
+load_data <- function(file) {
+  data <- read_table(file = file, 
+             col_names=c("body", 
+                          "January", 
+                          "February", 
+                          "March", 
+                          "April", 
+                          "May", 
+                          "June",
+                          "July",
+                          "August",
+                          "September",
+                          "October",
+                          "November",
+                          "December",
+                          "ignore")) %>% select(c(-14))
+  return(data)
+}
+
+separate_body <- function(data) {
+  new_data <- data %>% 
+    separate(body, 
+            into=c("state", 
+                  "division_number",
+                  "element_code",
+                  "year"),
+            sep=c(3,4,6,10))
+  return(new_data)
+}
+  
+update_states <- function(data){
+  data_states = data %>% pull(state)
+  data_states_factor = factor(data_states)
+  new_data = data
+  new_data$state = 
+  fct_recode(data_states,
+              "Alabama" = "001",
+              "Arizona" = "002",
+              "Arkansas" = "003",
+              "California" = "004",
+              "Colorado" = "005",
+              "Connecticut" = "006",
+              "Delaware" = "007",
+              "Florida" = "008",
+              "Georgia" = "009",
+              "Idaho" = "010",
+              "Illinois" = "011",
+              "Indiana" = "012",
+              "Iowa" = "013",
+              "Kansas" = "014",
+              "Kentucky" = "015",
+              "Louisiana" = "016",
+              "Maine" = "017",
+              "Maryland" = "018",
+              "Massachusetts" = "019",
+              "Michigan" = "020",
+              "Minnesota" = "021",
+              "Mississippi" = "022",
+              "Missouri" = "023",
+              "Montana" = "024",
+              "Nebraska" = "025",
+              "Nevada" = "026",
+              "New Hampshire" = "027",
+              "New Jersey" = "028",
+              "New Mexico" = "029",
+              "New York" = "030",
+              "North Carolina" = "031",
+              "North Dakota" = "032",
+              "Ohio" = "033",
+              "Oklahoma" = "034",
+              "Oregon" = "035",
+              "Pennsylvania" = "036",
+              "Rhode Island" = "037",
+              "South Carolina" = "038",
+              "South Dakota" = "039",
+              "Tennessee" = "040",
+              "Texas" = "041",
+              "Utah" = "042",
+              "Vermont" = "043",
+              "Virginia" = "044",
+              "Washington" = "045",
+              "West Virginia" = "046",
+              "Wisconsin" = "047",
+              "Wyoming" = "048",
+              "Alaska" = "050")
+  
+  new_data = new_data %>% 
+  filter(substr(state, start=0, stop=1) != "1" &
+         substr(state, start=0, stop=1) != "2")
+  return(new_data)
+}
+
+clean_data <- function(data) {
+  new_data <- data %>% select(c(-division_number, -element_code))
+  return(new_data)
+}
+
+pivot_data <- function(data, name){
+  new_data = data %>% 
+  pivot_longer(c(3:14),
+               names_to="month",
+               values_to=name)
+  return(new_data)
+}
+```
+
+```{r message=FALSE}
+# Load in all the climate data
+precipitation = load_data("./data/raw/climate/climdiv-pcpnst-v1.0.0-20211206")
+avg_temp = load_data("./data/raw/climate/climdiv-tmpcst-v1.0.0-20211206")
+pdsi = load_data("./data/raw/climate/climdiv-pdsist-v1.0.0-20211206")
+phdi = load_data("./data/raw/climate/climdiv-phdist-v1.0.0-20211206")
+zndx = load_data("./data/raw/climate/climdiv-zndxst-v1.0.0-20211206")
+pmdi = load_data("./data/raw/climate/climdiv-pmdist-v1.0.0-20211206")
+heating = load_data("./data/raw/climate/climdiv-hddcst-v1.0.0-20211206")
+cooling = load_data("./data/raw/climate/climdiv-cddcst-v1.0.0-20211206")
+max_temp = load_data("./data/raw/climate/climdiv-tmaxst-v1.0.0-20211206")
+min_temp = load_data("./data/raw/climate/climdiv-tminst-v1.0.0-20211206")
+spi1 = load_data("./data/raw/climate/climdiv-sp01st-v1.0.0-20211206")
+spi2 = load_data("./data/raw/climate/climdiv-sp02st-v1.0.0-20211206")
+spi3 = load_data("./data/raw/climate/climdiv-sp03st-v1.0.0-20211206")
+spi6 = load_data("./data/raw/climate/climdiv-sp06st-v1.0.0-20211206")
+spi9 = load_data("./data/raw/climate/climdiv-sp09st-v1.0.0-20211206")
+spi12 = load_data("./data/raw/climate/climdiv-sp12st-v1.0.0-20211206")
+spi24 = load_data("./data/raw/climate/climdiv-sp24st-v1.0.0-20211206")
+```
+
+```{r}
+# separate the body into state, division number, element code, and year
+precipitation = separate_body(precipitation)
+avg_temp = separate_body(avg_temp)
+pdsi = separate_body(pdsi)
+phdi = separate_body(phdi)
+zndx = separate_body(zndx)
+pmdi = separate_body(pmdi)
+heating = separate_body(heating)
+cooling = separate_body(cooling)
+max_temp = separate_body(max_temp)
+min_temp = separate_body(min_temp)
+spi1 = separate_body(spi1)
+spi2 = separate_body(spi2)
+spi3 = separate_body(spi3)
+spi6 = separate_body(spi6)
+spi9 = separate_body(spi9)
+spi12 = separate_body(spi12)
+spi24 = separate_body(spi24)
+```
+
+```{r}
+# remove division number and element code
+precipitation = clean_data(precipitation)
+avg_temp = clean_data(avg_temp)
+pdsi = clean_data(pdsi)
+phdi = clean_data(phdi)
+zndx = clean_data(zndx)
+pmdi = clean_data(pmdi)
+heating = clean_data(heating)
+cooling = clean_data(cooling)
+max_temp = clean_data(max_temp)
+min_temp = clean_data(min_temp)
+spi1 = clean_data(spi1)
+spi2 = clean_data(spi2)
+spi3 = clean_data(spi3)
+spi6 = clean_data(spi6)
+spi9 = clean_data(spi9)
+spi12 = clean_data(spi12)
+spi24 = clean_data(spi24)
+```
+
+```{r}
+# Make the value for each month in the year a separate observation
+precipitation = pivot_data(precipitation, "precipitation")
+avg_temp = pivot_data(avg_temp, "avg_temp")
+pdsi = pivot_data(pdsi, "pdsi")
+phdi = pivot_data(phdi, "phdi")
+zndx = pivot_data(zndx, "zndx")
+pmdi = pivot_data(pmdi, "pmdi")
+heating = pivot_data(heating, "heating_degree_days")
+cooling = pivot_data(cooling, "cooling_degree_days")
+max_temp = pivot_data(max_temp, "max_temp")
+min_temp = pivot_data(min_temp, "min_temp")
+spi1 = pivot_data(spi1, "spi_1")
+spi2 = pivot_data(spi2, "spi_2")
+spi3 = pivot_data(spi3, "spi_3")
+spi6 = pivot_data(spi6, "spi_6")
+spi9 = pivot_data(spi9, "spi_9")
+spi12 = pivot_data(spi12, "spi_12")
+spi24 = pivot_data(spi24, "spi_24")
+```
+
+```{r}
+# Join the tables
+climate_data = merge(precipitation, avg_temp)  %>%
+  merge(pdsi) %>%
+  merge(zndx) %>%
+  merge(pmdi) %>%
+  merge(heating) %>%
+  merge(cooling) %>%
+  merge(max_temp) %>%
+  merge(min_temp) %>%
+  merge(spi1) %>%
+  merge(spi2) %>%
+  merge(spi3) %>%
+  merge(spi6) %>%
+  merge(spi9) %>%
+  merge(spi12) %>%
+  merge(spi24)
+```
+
+```{r}
+# Update state factors and remove non-states from data
+climate_data = update_states(climate_data)
+```
+
+```{r}
+# write cleaned data to file
+write_tsv(climate_data, file = "data/clean/climate-data.tsv")
+```

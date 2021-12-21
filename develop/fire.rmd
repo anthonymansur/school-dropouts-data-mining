@@ -1,0 +1,100 @@
+---
+title: "develop"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# load libraries
+library(tidyverse)
+library(lubridate)
+library(stringr)
+library(usdata)
+```
+
+```{r}
+# load in data
+fire_data = read_tsv("../data/raw/fires.tsv")
+fire_data %>% head()
+```
+```{r}
+# Select relevant data
+fire_data = fire_data %>% select(c("FIRE_YEAR", 
+                           "DISCOVERY_DATE", 
+                           "DISCOVERY_TIME", 
+                           "CONT_DATE",
+                           "CONT_TIME",
+                           "FIRE_SIZE",
+                           "STATE",
+                           "NWCG_CAUSE_CLASSIFICATION"))
+```
+
+```{r}
+# extract month
+fire_data = fire_data %>% 
+  separate(DISCOVERY_DATE, into=c("discovered"), sep=" ") %>%
+  mutate(month = month(mdy(discovered), label=TRUE, abbr=FALSE))
+```
+
+```{r}
+# extract containment time in minutes
+fire_data = fire_data %>% 
+  separate(CONT_DATE, into=c("contained"), sep=" ") %>%
+   mutate(CONT_TIME=str_pad(CONT_TIME, 4, pad = "0"),
+           DISCOVERY_TIME=str_pad(DISCOVERY_TIME, 4, pad = "0")) %>%
+  mutate(contained = str_c(contained, " ", CONT_TIME),
+         discovered = str_c(discovered, " ", DISCOVERY_TIME)) %>%
+  mutate(contained = mdy_hm(contained),
+         discovered = mdy_hm(discovered)) %>%
+  mutate(time_to_contain=as.numeric(difftime(contained,discovered,units="mins"))) %>%
+  select(c(-discovered, -DISCOVERY_TIME, -contained, -CONT_TIME))
+
+fire_data = fire_data %>% drop_na(time_to_contain)
+```
+
+```{r}
+# Reformat data
+fire_data = fire_data %>% 
+  rename(year = FIRE_YEAR,
+         cause = NWCG_CAUSE_CLASSIFICATION,
+         acres = FIRE_SIZE,
+         state = STATE) %>%
+  mutate(state = abbr2state(state))
+
+fire_data$cause[fire_data$cause == "NULL"] = "Unknown"
+fire_data$cause[fire_data$cause == "Missing data/not specified/undetermined"] = "Unknown"
+```
+
+```{r}
+fire_data$cause = factor(fire_data$cause)
+levels(fire_data$cause)
+fire_data %>% head()
+```
+
+```{r}
+# NOTE: not including cause into the final dataset. 
+# May want to do so in the future
+
+fire_data = fire_data %>%
+  group_by(year, state, month) %>%
+  summarise(fire_size = round(sum(acres),1),
+            num_of_fires = n(),
+            avg_contain_time = as.integer(mean(time_to_contain)),
+            human_prop = sum(cause == "Human"),
+            natural_prop = sum(cause == "Natural"),
+            unknown_prop = sum(cause == "Unknown"))
+fire_data = fire_data %>% 
+  mutate(human_prop = round(human_prop / num_of_fires, 2),
+         natural_prop = round(natural_prop / num_of_fires, 2),
+         unknown_prop = round(unknown_prop / num_of_fires, 2))
+```
+
+```{r}
+fire_data
+
+# write cleaned data to file
+#write_tsv(fire_data, file = "data/clean/fire-data.tsv")
+```

@@ -1,0 +1,158 @@
+---
+title: "regression"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(glmnetUtils)
+
+source("../code/functions/plot_glmnet.R")
+```
+
+```{r}
+dropout_train = read_tsv("../data/clean/dropout-train.tsv") %>%
+  select(-num_of_schools, 
+         -fips, 
+         -county, 
+         -state, 
+         -mean_experience, 
+         -mean_salary)
+dropout_test = read_tsv("../data/clean/dropout-test.tsv") %>%
+  select(-num_of_schools, 
+         -fips, 
+         -county, 
+         -state, 
+         -mean_experience, 
+         -mean_salary)
+```
+
+```{r}
+# Ordinary least squares
+lm_fit = lm(formula=dropout_rate ~ ., data = dropout_train)
+summary(lm_fit)
+linear_predictions = predict(lm_fit, newdata = dropout_test)
+linear_rmse = sqrt(mean((linear_predictions - dropout_test$dropout_rate)^2))
+linear_rmse
+```
+
+```{r}
+summary(lm_fit)
+```
+
+```{r}
+# Ridge Regression Analysis
+
+# Running a cross-validated ridge regression
+ridge_fit = cv.glmnet(dropout_rate ~ .,  # formula notation, as usual
+                      alpha = 0,                 # alpha = 0 for ridge
+                      nfolds = 10,               # number of folds
+                      data = dropout_train)   # data to run ridge on
+
+# Inspect results
+plot(ridge_fit) # TODO: save cv plot
+ridge_trace_plot = plot_glmnet(ridge_fit, dropout_test, features_to_plot = 7)
+
+# Predict
+ridge_predictions = predict(ridge_fit,              # fit object
+                            newdata = dropout_test, # use test data
+                            s = "lambda.1se",       # value of lamda to use
+                            type = "response") %>%  # to output probabilities
+  as.numeric()                                        # convert to vector
+
+# Root Mean Squared Error
+ridge_rmse = 
+  sqrt(mean((ridge_predictions - dropout_test$dropout_rate)^2))
+ridge_rmse
+```
+
+```{r}
+# Lasso Regression Analysis
+
+# Running a cross-validated lasso regression
+lasso_fit = cv.glmnet(dropout_rate ~ .,  # formula notation, as usual
+                      alpha = 1,                 # alpha = 1 for lasso
+                      nfolds = 10,               # number of folds
+                      data = dropout_train)   # data to run lasso on
+
+# Inspect results
+plot(lasso_fit) # TODO: save cv plot
+lasso_trace_plot = plot_glmnet(lasso_fit, dropout_test, features_to_plot = 4)
+
+# Predict
+lasso_predictions = predict(lasso_fit,              # fit object
+                            newdata = dropout_test, # use test data
+                            s = "lambda.1se",       # value of lamda to use
+                            type = "response") %>%  # to output probabilities
+  as.numeric()                                        # convert to vector
+
+# Root Mean Squared Error
+lasso_rmse = 
+  sqrt(mean((lasso_predictions - dropout_test$dropout_rate)^2))
+lasso_rmse
+```
+```{r}
+# Elastic Net Regression Analysis
+
+elnet_fit = cva.glmnet(dropout_rate ~ .,  # formula notation, as usual
+                       nfolds = 10,               # number of folds
+                       data = dropout_train)   # data to run on
+# The alphas used
+elnet_fit$alpha
+
+# plot the minimum CV error for each value of alpha
+plot_cva_glmnet(elnet_fit) # TODO: save cv plot
+
+# Extract optimal alpha
+elnet_fit_best = extract_best_elnet(elnet_fit)
+elnet_fit_best$alpha
+
+# CV plot to select lambda
+plot(elnet_fit_best) # TODO: save cv plot
+elnet_trace_plot = plot_glmnet(elnet_fit_best, dropout_train, 
+                               features_to_plot = 6)
+elnet_trace_plot
+
+# Make predictions
+elnet_predictions = predict(elnet_fit, 
+                            alpha = elnet_fit$alpha,
+                            newdata = dropout_test,
+                            s = "lambda.1se") %>% as.numeric()
+elnet_predictions
+elnet_rmse = sqrt(mean((elnet_predictions - dropout_test$dropout_rate)^2))
+elnet_rmse
+```
+```{r}
+m = mean(dropout_train$dropout_rate)
+intercept_rmse = sqrt(mean((m - dropout_test$dropout_rate)^2))
+
+# create table of these three model test errors
+error_for_models = tribble(
+  ~Model, ~RMSE, 
+  #------/------- 
+  "Intercept", intercept_rmse,
+  "Linear", linear_rmse,
+  "Ridge", ridge_rmse,
+  "Lasso", lasso_rmse,
+  "Elastic", elnet_rmse
+  )
+error_for_models
+```
+# print these metrics in nice table
+error_for_models %>% kable(format = "latex", row.names = NA, 
+                        booktabs = TRUE,
+                        digits = 5,
+                        col.names = c("Model type", 
+                                      "Root mean squared error"),
+                        caption = "These are the root mean squared test 
+                        errors of the linear model, ridge regression, 
+                        and lasso regression.") %>%
+  kable_styling(position = "center") %>%
+  kable_styling(latex_options = "HOLD_position")
+

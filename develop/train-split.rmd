@@ -1,0 +1,109 @@
+---
+title: "train-split"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(glmnetUtils)                    # to run ridge and lasso
+source("../code/functions/plot_glmnet.R")            # for lasso/ridge trace plots
+```
+
+```{r}
+pct_change <- function(val){
+  if (abs(val) < 0.0001)
+    return (0.0)
+  else
+    return(round((val - lead(val))/lead(val)*100,1))
+}
+```
+
+```{r}
+# read in the training data
+# TODO: get the actual training!
+fire_climate_train = read_tsv("../data/clean/fire-climate-data.tsv")
+fire_climate_train = fire_climate_train %>%
+  group_by(state, year) %>%
+  summarise(num_of_fires = sum(num_of_fires),
+            fire_size = sum(fire_size),
+            avg_contain_time = median(avg_contain_time),
+            human_prop = mean(human_prop),
+            natural_prop = mean(natural_prop),
+            unknown_prop = mean(unknown_prop),
+            precipitation = mean(precipitation, na.rm=TRUE),
+            pdsi = mean(pdsi, na.rm=TRUE),
+            phdi = mean(phdi, na.rm=TRUE),
+            zndx = mean(zndx, na.rm=TRUE),
+            pmdi = mean(zndx, na.rm=TRUE),
+            heating_degree_days = mean(heating_degree_days, na.rm=TRUE),
+            cooling_degree_days = mean(cooling_degree_days, na.rm=TRUE),
+            avg_temp = mean(avg_temp, na.rm=TRUE),
+            spi_6 = mean(spi_6, na.rm=TRUE))
+
+fire_climate_train %>% group_by(state) %>%
+    arrange(desc(year), .by_group = TRUE)
+
+fire_climate_train = fire_climate_train %>%
+    group_by(state) %>%
+    arrange(desc(year), .by_group = TRUE) %>%
+    mutate(num_of_fires = 
+             ifelse(abs(num_of_fires) > 0.001, 
+                    round((fire_size - lead(fire_size))/lead(fire_size)*100,2),
+                    0),
+           fire_size = round((fire_size - lead(fire_size))/lead(fire_size)*100,2),
+           avg_contain_time = round((avg_contain_time - lead(avg_contain_time))/lead(avg_contain_time)*100,2),
+           human_prop = round((human_prop - lead(human_prop))/lead(human_prop)*100,2),
+           natural_prop = round((natural_prop - lead(natural_prop))/lead(natural_prop)*100,2),
+           unknown_prop = 
+             ifelse(abs(unknown_prop) > 0.001, 
+                    round((unknown_prop - lead(unknown_prop))/lead(unknown_prop)*100,2),
+                    0),
+           precipitation = round((precipitation - lead(precipitation))/lead(precipitation)*100,2),
+           pdsi = round((pdsi - lead(pdsi))/lead(pdsi)*100,2),
+           pmdi = round((pmdi - lead(pmdi))/lead(pmdi)*100,2),
+           phdi = round((phdi - lead(phdi))/lead(phdi)*100,2),
+           zndx = round((zndx - lead(zndx))/lead(zndx)*100,2),
+           heating_degree_days = round((heating_degree_days - lead(heating_degree_days))/lead(heating_degree_days)*100,2),
+           cooling_degree_days = round((cooling_degree_days - lead(cooling_degree_days))/lead(cooling_degree_days)*100,2),
+           avg_temp = round((avg_temp - lead(avg_temp))/lead(avg_temp)*100,2),
+           spi_6 = round((spi_6 - lead(spi_6))/lead(spi_6)*100,2),
+           ) %>%
+  filter(year > 1992)
+```
+```{r}
+fire_climate_train %>% select(c(fire_size, pdsi)) %>% filter(pdsi < 0 & state=="California")
+fire_climate_train %>% filter(pdsi < 0) %>%
+  filter(abs(fire_size) < 1000) %>%
+  ggplot(aes(x=abs(zndx),y=num_of_fires)) +
+  geom_point() +
+  geom_smooth()
+```
+
+```{r}
+set.seed(1)
+ridge_fit = cv.glmnet(fire_size ~ . - year - num_of_fires,   
+                      alpha = 0,                 
+                      nfolds = 10,               
+                      data = fire_climate_train)
+ridge_fit
+```
+```{r}
+set.seed(1)
+lasso_fit = cv.glmnet(fire_size ~ . - year - num_of_fires - state,   
+                      alpha = 0.1,                 
+                      nfolds = 10,               
+                      data = fire_climate_train)
+
+plot_glmnet(lasso_fit, fire_climate_train, features_to_plot = 6)
+```
+```{r}
+beta_hat_std = extract_std_coefs(lasso_fit, fire_climate_train)
+beta_hat_std
+beta_hat_std %>%
+  filter(coefficient != 0) %>%
+  arrange(desc(abs(coefficient)))
+```
